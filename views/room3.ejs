@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 3</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 3 – La Crypte des Signatures Maudites</h2>
+      <p>
+        Cette salle utilise un jeton JWT pour décider si tu peux ouvrir la porte.
+        Il te faut un token avec :
+      </p>
+      <pre>{
+  "role": "master",
+  "level": 3
+}</pre>
+      <p>
+        Ton token actuel (rôle “player”) :
+      </p>
+      <pre><%= demoToken %></pre>
+
+      <details>
+        <summary>💡 Indice 1</summary>
+        <p class="hint">
+          Copie ce token dans <a href="https://jwt.io/" target="_blank">jwt.io</a>
+          et regarde le payload. Que se passe-t-il si tu changes
+          <code>role</code> et <code>level</code> ?
+        </p>
+      </details>
+
+      <details>
+        <summary>💡 Indice 2 (technique)</summary>
+        <p class="hint">
+          Le secret utilisé pour signer les tokens est très faible (quelques
+          caractères). Si tu devines ou brute-force ce secret, tu peux re-signer
+          un token avec les valeurs que tu veux.
+        </p>
+      </details>
+
+      <details>
+        <summary>📘 Explication de la faille</summary>
+        <p class="hint">
+          Cette salle illustre un problème de <strong>JWT mal configuré</strong> :
+          secret trop court / faible. Un attaquant peut bricoler son propre token
+          en forgeant un payload avec <code>role="master"</code> et
+          <code>level=3</code>, puis le signer avec le même secret.
+        </p>
+        <p class="hint">
+          <strong>Correctif :</strong> utiliser un secret long et aléatoire,
+          stocké de manière sécurisée ; limiter les algorithmes autorisés ;
+          vérifier que le payload respecte bien une politique métier stricte
+          côté serveur (ne jamais faire confiance uniquement au contenu du token).
+        </p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h3>Soumettre un token JWT</h3>
+      <form method="post" action="/room3">
+        <label for="token">Ton token signé :</label>
+        <textarea id="token" name="token" rows="4" required></textarea>
+        <button type="submit">Ouvrir la crypte</button>
+      </form>
+    </section>
+  </main>
+<%- include('partials/footer') %>
+</body>
+</html>

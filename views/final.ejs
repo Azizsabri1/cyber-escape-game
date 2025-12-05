@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle Finale</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+ <%- include('partials/header') %>
+  <main>
+    <% if (locked) { %>
+      <section class="card">
+        <h2>Salle Finale – Porte fermée</h2>
+        <p>Il reste des salles à vaincre avant d'entrer dans la tour :</p>
+        <ul>
+          <li>Salle 1 : <%= game.room1Done ? '✅' : '❌' %></li>
+          <li>Salle 2 : <%= game.room2Done ? '✅' : '❌' %></li>
+          <li>Salle 3 : <%= game.room3Done ? '✅' : '❌' %></li>
+          <li>Salle 4 : <%= game.room4Done ? '✅' : '❌' %></li>
+          <li>Salle 5 : <%= game.room5Done ? '✅' : '❌' %></li>
+        </ul>
+        <p><a href="/">Retour au hall</a></p>
+      </section>
+    <% } else { %>
+      <section class="card">
+        <h2>Salle Finale – La Tour du Gardien</h2>
+        <p>🎉 Félicitations ! Tu as exploité avec succès :</p>
+        <ul>
+          <li>
+            <strong>Salle 1 – Config / JSON Injection</strong><br>
+            <span class="hint">
+              Fusion naïve <code>Object.assign</code> avec des données utilisateur,
+              permettant d'écraser <code>isAdmin</code> et autres champs sensibles.
+            </span>
+          </li>
+          <li>
+            <strong>Salle 2 – XSS DOM</strong><br>
+            <span class="hint">
+              Utilisation de <code>innerHTML</code> sans échappement, autorisant
+              l'injection de JavaScript côté navigateur.
+            </span>
+          </li>
+          <li>
+            <strong>Salle 3 – JWT secret faible</strong><br>
+            <span class="hint">
+              Secret trop court pour signer les tokens JWT, permettant de forger
+              un token avec un rôle plus élevé.
+            </span>
+          </li>
+          <li>
+            <strong>Salle 4 – SQL Injection</strong><br>
+            <span class="hint">
+              Concaténation directe de la saisie dans la requête SQL, ce qui permet
+              de manipuler la clause <code>WHERE</code>.
+            </span>
+          </li>
+          <li>
+            <strong>Salle 5 – Path Traversal / File Disclosure</strong><br>
+            <span class="hint">
+              Construction d'un chemin de fichier avec des données utilisateur, sans
+              filtrer <code>../</code>, permettant de lire des fichiers en dehors
+              du dossier prévu.
+            </span>
+          </li>
+        </ul>
+        <p>
+          Tu peux maintenant utiliser ce jeu comme démonstration dans ton rapport :
+          chaque salle = une vulnérabilité, un scénario d'attaque et un correctif.
+        </p>
+      </section>
+    <% } %>
+  </main>
+ <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 4</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+ <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 4 – La Bibliothèque Interdite</h2>
+      <p>
+        Tu peux chercher un grimoire par son titre. Le backend construit
+        une requête SQL avec ta saisie… en concaténant la chaîne.
+      </p>
+
+      <details>
+        <summary>💡 Indice 1</summary>
+        <p class="hint">
+          Cherche un titre normal, par exemple <code>Ombres</code>, puis
+          regarde la requête exécutée.
+        </p>
+      </details>
+
+      <details>
+        <summary>💡 Indice 2 (technique)</summary>
+        <p class="hint">
+          La requête ressemble à
+          <code>... WHERE title LIKE '%<em>ta_saisie</em>%'</code>.
+          Si tu ajoutes <code>' OR 1=1 --</code>, la condition devient
+          toujours vraie et tu peux lister tous les livres.
+        </p>
+      </details>
+
+      <details>
+        <summary>📘 Explication de la faille</summary>
+        <p class="hint">
+          C'est une <strong>injection SQL</strong> classique : la saisie
+          utilisateur est collée directement dans la requête sans paramétrage.
+          Un attaquant peut manipuler la logique SQL pour lire plus de données
+          que prévu, voire modifier / supprimer des enregistrements.
+        </p>
+        <p class="hint">
+          <strong>Correctif :</strong> utiliser des requêtes préparées
+          (paramètres <code>?</code>, <code>$1</code>, etc.), ne jamais
+          concaténer directement la saisie dans la chaîne SQL, et limiter
+          les comptes DB (principe du moindre privilège).
+        </p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h3>Recherche</h3>
+      <form method="get" action="/room4/search">
+        <label for="q">Mot-clé dans le titre :</label>
+        <input type="text" id="q" name="q" placeholder="' OR 1=1 --">
+        <button type="submit">Chercher</button>
+      </form>
+    </section>
+  </main>
+<%- include('partials/footer') %>
+</body>
+</html>

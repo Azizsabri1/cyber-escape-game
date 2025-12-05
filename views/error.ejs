@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2><%= title %></h2>
+      <p><%= message %></p>
+      <% if (backLink) { %>
+        <p><a href="<%= backLink %>">Retour</a></p>
+      <% } %>
+    </section>
+  </main>
+ <%- include('partials/footer') %>
+</body>
+</html>

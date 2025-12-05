@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hall</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Hall d'entrée</h2>
+      <p>
+        Tu entres dans un escape game web. Chaque salle contient une
+        <strong>vraie vulnérabilité</strong> qu'il faut exploiter pour avancer.
+      </p>
+      <p>Progression :</p>
+      <ul class="progress">
+        <li>Salle 1 – Config / JSON
+          <span class="tag <%= game.room1Done ? 'tag-done' : 'tag-todo' %>">
+            <%= game.room1Done ? 'OK' : 'À faire' %>
+          </span>
+        </li>
+        <li>Salle 2 – XSS DOM
+          <span class="tag <%= game.room2Done ? 'tag-done' : 'tag-todo' %>">
+            <%= game.room2Done ? 'OK' : 'À faire' %>
+          </span>
+        </li>
+        <li>Salle 3 – JWT secret faible
+          <span class="tag <%= game.room3Done ? 'tag-done' : 'tag-todo' %>">
+            <%= game.room3Done ? 'OK' : 'À faire' %>
+          </span>
+        </li>
+        <li>Salle 4 – SQL Injection
+          <span class="tag <%= game.room4Done ? 'tag-done' : 'tag-todo' %>">
+            <%= game.room4Done ? 'OK' : 'À faire' %>
+          </span>
+        </li>
+        <li>Salle 5 – Path Traversal
+          <span class="tag <%= game.room5Done ? 'tag-done' : 'tag-todo' %>">
+            <%= game.room5Done ? 'OK' : 'À faire' %>
+          </span>
+        </li>
+      </ul>
+      <p>
+        Tu peux commencer par la <a href="/room1">Salle 1</a>.
+      </p>
+    </section>
+  </main>
+ <%- include('partials/footer') %>
+</body>
+</html>

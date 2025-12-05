@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 2</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+ <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 2 – La Salle des Miroirs Trompeurs</h2>
+      <p>
+        Ici, ton “nom magique” est affiché directement dans le DOM avec
+        <code>innerHTML</code> sans échappement. Si tu injectes du HTML ou du
+        JavaScript, le navigateur l'exécutera.
+      </p>
+
+      <details>
+        <summary>💡 Indice 1</summary>
+        <p class="hint">
+          Essaie de mettre des balises HTML simples dans ton nom, comme
+          <code>&lt;b&gt;aziz&lt;/b&gt;</code>, et regarde le rendu.
+        </p>
+      </details>
+
+      <details>
+        <summary>💡 Indice 2 (technique)</summary>
+        <p class="hint">
+          Le code utilise <code>innerHTML = "✨ " + val + " ✨"</code>. Si tu
+          ajoutes un <code>&lt;img src=x onerror="..."&gt;</code>, l'attribut
+          <code>onerror</code> peut exécuter du JavaScript.
+        </p>
+      </details>
+
+      <details>
+        <summary>📘 Explication de la faille</summary>
+        <p class="hint">
+          C'est une faille de type <strong>Cross-Site Scripting (XSS)</strong>
+          côté DOM : le développeur insère directement du contenu fourni par
+          l'utilisateur dans <code>innerHTML</code>, ce qui permet d'injecter
+          du code JavaScript.
+        </p>
+        <p class="hint">
+          <strong>Correctif :</strong> utiliser <code>textContent</code> pour
+          afficher du texte, ou échapper systématiquement les caractères spéciaux
+          HTML (<code>&lt;</code>, <code>&gt;</code>, etc.). En général, ne
+          jamais utiliser <code>innerHTML</code> avec des données non fiables.
+        </p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h3>Entrer dans le miroir</h3>
+      <label for="playerName">Nom magique :</label>
+      <input type="text" id="playerName" placeholder="Tape quelque chose...">
+      <button onclick="showName()">Afficher</button>
+
+      <h4>Miroir :</h4>
+      <div id="mirror" style="margin-top:8px; padding:8px; background:#020617; border-radius:10px;">
+        (vide)
+      </div>
+      <p class="hint">
+        Objectif : injecter du JS qui appelle <code>window.salle2Win()</code>.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // ❌ Vulnérable : innerHTML avec entrée utilisateur non filtrée
+    function showName() {
+      var val = document.getElementById('playerName').value;
+      document.getElementById('mirror').innerHTML = "✨ " + val + " ✨";
+    }
+
+    // Appelé par ton payload XSS pour signaler la victoire
+    window.salle2Win = function() {
+  fetch('/room2/win', { method: 'POST' }).then(() => {
+    document.getElementById('mirror').innerHTML =
+      "<strong>🎉 Salle 2 vaincue ! Redirection vers la Salle 3...</strong>";
+    setTimeout(function () {
+      window.location.href = '/room3';
+    }, 1500);
+  });
+};
+
+  </script>
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 3 – Résultat</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 3 – Vérification du token</h2>
+      <p>Payload décodé :</p>
+      <pre><%= JSON.stringify(decoded, null, 2) %></pre>
+
+      <% if (success) { %>
+        <p>
+          🎉 Bravo ! Ton token contient <code>role="master"</code> et
+          <code>level=3</code>.<br>
+          Salle 3 vaincue. Tu peux continuer vers la
+          <a href="/room4">Salle 4</a>.
+        </p>
+      <% } else { %>
+        <p>
+          🔒 Ce token n'a pas les bons champs. Modifie le payload et
+          re-signe avec le bon secret.
+        </p>
+      <% } %>
+
+      <p><a href="/room3">Revenir à la salle 3</a></p>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

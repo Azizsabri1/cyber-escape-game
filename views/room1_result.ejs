@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 1 – Résultat</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+ <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 1 – Résultat de la fusion</h2>
+      <p>Config finale utilisée par le jeu :</p>
+      <pre><%= JSON.stringify(merged, null, 2) %></pre>
+
+      <% if (isAdmin) { %>
+        <p>
+          🎉 Bravo ! Tu as activé <code>isAdmin = true</code> via le JSON.<br>
+          Salle 1 vaincue. Tu peux continuer vers la <a href="/room2">Salle 2</a>.
+        </p>
+      <% } else { %>
+        <p>
+          🔒 Tu n'es pas encore admin. Modifie ton JSON pour écraser
+          <code>isAdmin</code>.
+        </p>
+      <% } %>
+
+      <p><a href="/room1">Revenir à la salle 1</a></p>
+    </section>
+  </main>
+<%- include('partials/footer') %>
+</body>
+</html>

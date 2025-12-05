@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 5 – Archives Interdites</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 5 – Les Archives Interdites</h2>
+      <p>
+        Dans cette salle, tu peux lire des “parchemins” stockés sur le serveur.
+        Le jeu lit des fichiers dans un dossier <code>/secret</code> en fonction
+        du nom que tu tapes.
+      </p>
+      <p>
+        Objectif : réussir à lire soit <code>flag-room5.txt</code>,
+        soit un fichier en dehors du dossier <code>/secret</code>
+        (par exemple le fichier <code>app.js</code>).
+      </p>
+
+      <details>
+        <summary>💡 Indice 1</summary>
+        <p class="hint">
+          Commence par lire un fichier simple, par exemple
+          <code>scroll1.txt</code>.
+        </p>
+      </details>
+
+      <details>
+        <summary>💡 Indice 2 (technique)</summary>
+        <p class="hint">
+          Le serveur fait quelque chose comme
+          <code>path.join(__dirname, 'secret', fileFromUser)</code> puis
+          <code>readFile()</code>.<br>
+          Que se passe-t-il si tu mets <code>../app.js</code> comme nom
+          de fichier ?
+        </p>
+      </details>
+
+      <details>
+        <summary>📘 Explication de la faille</summary>
+        <p class="hint">
+          C'est une vulnérabilité de type
+          <strong>Path Traversal / File Disclosure</strong> : le serveur
+          construit un chemin de fichier avec des données utilisateur sans
+          filtrer les séquences <code>../</code>. L'attaquant peut alors
+          lire des fichiers en dehors du dossier prévu (code source,
+          configuration, secrets, etc.).
+        </p>
+        <p class="hint">
+          <strong>Correctif :</strong> utiliser une liste blanche de fichiers
+          autorisés, normaliser le chemin et vérifier que le chemin final
+          reste strictement à l'intérieur du répertoire prévu. Filtrer
+          / bloquer toutes les occurrences de <code>../</code>,
+          <code>..\\</code>, etc.
+        </p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h3>Lire un parchemin</h3>
+      <form method="get" action="/room5/read">
+        <label for="file">Nom du fichier dans /secret :</label>
+        <input type="text" id="file" name="file" placeholder="ex: scroll1.txt">
+        <button type="submit">Lire</button>
+      </form>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

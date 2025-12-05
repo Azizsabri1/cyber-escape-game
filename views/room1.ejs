@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Salle 1</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+ <%- include('partials/header') %>
+  <main>
+    <section class="card">
+      <h2>Salle 1 – La Chambre des Variables Interdites</h2>
+      <p>
+        Le jeu fusionne ta configuration avec une config par défaut
+        en utilisant <code>Object.assign</code>. Tout ce que tu mets
+        dans ton JSON peut modifier le comportement du personnage.
+      </p>
+
+      <details>
+        <summary>💡 Indice 1</summary>
+        <p class="hint">
+          Essaie d'ajouter des champs comme <code>"score": 9999</code> ou
+          <code>"isAdmin": true</code> dans ton JSON.
+        </p>
+      </details>
+
+      <details>
+        <summary>💡 Indice 2 (technique)</summary>
+        <p class="hint">
+          Le serveur fait : <code>Object.assign({}, defaultConfig, userConfig)</code>.<br>
+          Si tu fournis <code>isAdmin</code> dans <code>userConfig</code>, tu peux
+          écraser la valeur par défaut.
+        </p>
+      </details>
+
+      <details>
+        <summary>📘 Explication de la faille</summary>
+        <p class="hint">
+          Cette salle illustre une <strong>injection de configuration JSON</strong>.
+          En fusionnant directement des données utilisateur avec un objet de
+          configuration, on permet à l'utilisateur d'écraser des champs sensibles
+          comme <code>isAdmin</code> ou <code>level</code>.
+        </p>
+        <p class="hint">
+          <strong>Correctif :</strong> filtrer les clés autorisées (par exemple
+          uniquement <code>username</code>, <code>color</code>, etc.), et ignorer
+          / surcharger côté serveur tous les champs sensibles
+          (<code>isAdmin</code>, <code>role</code>…).
+        </p>
+      </details>
+
+      <h3>Config par défaut</h3>
+      <pre><%= JSON.stringify(defaultConfig, null, 2) %></pre>
+
+      <h3>Ta config JSON</h3>
+      <form method="post" action="/room1">
+        <label for="jsonInput">Entre un objet JSON :</label>
+        <textarea id="jsonInput" name="jsonInput" rows="8" required>{
+  "username": "aziz"
+}</textarea>
+        <p class="hint">
+          Indice : essaie de redéfinir <code>isAdmin</code> ou <code>score</code>.
+        </p>
+        <button type="submit">Fusionner & Entrer</button>
+      </form>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>
